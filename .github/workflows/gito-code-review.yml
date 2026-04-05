@@ -28,7 +28,8 @@ jobs:
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_API_TYPE: openai
-          LLM_BASE_URL: https://openrouter.ai/api/v1
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          OPENAI_BASE_URL: https://openrouter.ai/api/v1
           MODEL: meta-llama/llama-3.3-70b-instruct:free
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
