@@ -19,16 +19,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install Gito
-        run: pip install gito.bot
+        run: pip install gito.bot~=4.0
 
       - name: Run AI code review
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_API_TYPE: openai
-          LLM_BASE_URL: https://api.groq.com/openai/v1
-          LLM_MODEL: llama-3.3-70b-versatile
+          LLM_BASE_URL: https://openrouter.ai/api/v1
+          MODEL: meta-llama/llama-3.3-70b-instruct:free
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python -m gito review
+        run: |
+          gito --verbose review
+          gito github-comment --token ${{ secrets.GITHUB_TOKEN }}
