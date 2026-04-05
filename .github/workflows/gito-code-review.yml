@@ -1,4 +1,4 @@
-name: "Gito: AI Code Review"
+name: "AI Code Review"
 
 on:
   pull_request:
@@ -19,19 +19,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
-      - name: Install Gito
-        run: pip install gito.bot~=4.0
+      - name: Install dependencies
+        run: pip install requests
 
       - name: Run AI code review
         env:
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_API_TYPE: openai
-          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
-          OPENAI_BASE_URL: https://openrouter.ai/api/v1
-          MODEL: meta-llama/llama-3.3-70b-instruct:free
+          GROQ_API_KEY: ${{ secrets.LLM_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gito --verbose review
-          gito github-comment --token ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: python ai_review.py
